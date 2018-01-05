@@ -1,3 +1,43 @@
+#bootstrap-overrides {
+    font-family: 'Muli', serif;
+    color: #B5E2D0;
+    font-weight: bold;
+    background-color: #020202;
+}
+
 #bootstrap-overrides #tableWrapper {
     margin-top: 100px;
+}
+
+#bootstrap-overrides .row td {
+    width: 50%;
+}
+
+/* Alternating Table Rows */
+#bootstrap-overrides .table-striped > tbody > tr:nth-child(2n+1) > td, #bootstrap-overrides .table-striped > tbody > tr:nth-child(2n+1) > th {
+   background-color: #134B72;
+}
+
+#bootstrap-overrides .table-striped > tbody > tr:nth-child(2n) > td, #bootstrap-overrides .table-striped > tbody > tr:nth-child(2n) > th {
+   background-color: #377751;
+}
+
+/* Remove borders from cells */
+#bootstrap-overrides .table-borderless > tbody > tr > td,
+#bootstrap-overrides .table-borderless > tbody > tr > th,
+#bootstrap-overrides .table-borderless > tfoot > tr > td,
+#bootstrap-overrides .table-borderless > tfoot > tr > th,
+#bootstrap-overrides .table-borderless > thead > tr > td,
+#bootstrap-overrides .table-borderless > thead > tr > th {
+    border: none;
+}
+
+/* Add border to TDs only */
+#bootstrap-overrides .table-striped > tbody > tr > td {
+    border: 1px solid;
+}
+
+#bootstrap-overrides .modal-content {
+    color: #D0E2DB;
+    background-color: #141414;
 }

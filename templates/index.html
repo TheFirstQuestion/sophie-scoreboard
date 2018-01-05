@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/main-style.css') }}">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Muli" rel="stylesheet">
     <!-- Title -->
     <title>Sophie Scoreboard</title>
 </head>
@@ -15,23 +17,148 @@
 
 <body id="bootstrap-overrides">
     <div class="container text-center">
-        <div class="col-6" id="tableWrapper">
-            <table class="table table-striped table-bordered">
+        <div class="table-responsive" id="tableWrapper">
+            <table class="table table-striped table-borderless">
                 <tbody>
-                    {% for x in data %}
+                    {% for person in people %}
                         <tr class="row">
-                            <td class="col-3">{{ x.name }}</td>
-                            <td class="col-3">{{ x.score }}</td>
+                            <td>{{ person[0] }}</td>
+                            <td>{{ person[1] }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <table class="table table-borderless">
+                <tbody>
+                    <tr class="row">
+                        <td><button type="button" data-toggle="modal" data-target="#personModal" class="btn btn-info">Add New Person</button></td>
+                        <td><button type="button" data-toggle="modal" data-target="#pointModal" class="btn btn-warning">Add Points</button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+
+    <!-- Add Person Modal -->
+    <div class="modal fade" id="personModal" tabindex="-1" role="dialog" aria-labelledby="personModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="personModalLabel">Add Person</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="person-name" class="form-control-label">Name:</label>
+                            <input type="text" class="form-control" id="person-name">
+                        </div>
+                        <div class="form-group">
+                            <label for="person-points" class="form-control-label">Points:</label>
+                            <input type="text" class="form-control" id="person-points">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="personButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Points Modal -->
+    <div class="modal fade" id="pointModal" tabindex="-1" role="dialog" aria-labelledby="pointModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pointModalLabel">Add Points</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="point-name" class="form-control-label">Person:</label>
+                            <select id = "point-name">
+                                {% for person in people %}
+                                    <option value="{{ person[0] }}">{{ person[0] }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="point-points" class="form-control-label">Points:</label>
+                            <input type="text" class="form-control" id="point-points">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="pointButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 
-<!-- Optional JavaScript -->
+
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+
+<!-- JavaScript Functions -->
+<script>
+    $(document).ready(function() {
+        var addPerson = function() {
+            // Get name and points
+            var name = $("#person-name").val();
+            var points = $("#person-points").val();
+            // Pass data to Python backend
+            $.ajax({
+                url: '/addPerson',
+                data: {name, points},
+                type: 'POST',
+                success: function(response) {
+                    window.location = response;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        var addPoints = function() {
+            // Get name and points
+            var name = $("#point-name").val();
+            var points = $("#point-points").val();
+            // Pass data to Python backend
+            $.ajax({
+                url: '/addPoints',
+                data: {name, points},
+                type: 'POST',
+                success: function(response) {
+                    window.location = response;
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        // Trigger function when button is clicked
+        $("#personButton").click(function() {
+            addPerson();
+        });
+
+        // Trigger function when button is clicked
+        $("#pointButton").click(function() {
+            addPoints();
+        });
+    });
+</script>
